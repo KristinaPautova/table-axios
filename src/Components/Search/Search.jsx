@@ -3,8 +3,13 @@ import React, { useContext, useEffect } from "react";
 import {tableContext} from "../../context/TableContextProvider";
 
 const Search = ({type,setType, operator, setOperator}) => {
-    const { setSearchVal } =
+    const { setSearchVal, getProduct , searchVal} =
         useContext(tableContext);
+
+    useEffect(() => {
+        getProduct(type,operator)
+    },[searchVal,type])
+
   return (
     <div className="search">
       <div className="search__list">
@@ -48,7 +53,7 @@ const Search = ({type,setType, operator, setOperator}) => {
 
       <div className="search__list">
         <label htmlFor="name">Ценность</label>
-        <input onChange={(e) => setSearchVal(e.target.value)} type="text" placeholder="Значение фильтра" />
+        <input onChange={(e) => setSearchVal(e.target.value)} type="search" placeholder="Значение фильтра" />
       </div>
     </div>
   );

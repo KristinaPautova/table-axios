@@ -19,7 +19,7 @@ const Table = () => {
 
   return (
     <>
-      {productsArr.length ? (
+      {productsArr ? (
         <div className="table">
           <Search type={type} setType={setType} operator={operator} setOperator={setOperator}/>
           <div className="container">

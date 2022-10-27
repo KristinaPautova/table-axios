@@ -30,28 +30,52 @@ let limit = 5;
 const TableContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
   const location = useLocation();
-  const [searchVal, setSearchVal] = useState("5444");
+  const [searchVal, setSearchVal] = useState("");
+  const [value, setValue] = useState("q");
 
   const addProduct = async (product) => {
     await axios.post(API, product);
   };
 
-  const getProduct = async () => {
+  const getProduct = async (type,operator) => {
     totalPageFunc();
+    // getTypeOperator(type,operat)
+    console.log(type)
 
+    if(type === "quantity" && operator === "less"){
+      setValue('quantity_gte')
+    }else if(type === "quantity" && operator === "more"){
+      setValue('quantity_lte')
+    }else if(type === "distance" && operator === "less"){
+      setValue('distance_gte')
+    }else if(type === "distance" && operator === "more"){
+      setValue('distance_lte')
+    }else{
+      setValue('q')
+    }
     const { data } = await axios.get(
-      `${API}?_page=${page}&_limit=${limit}&quantity=${searchVal}`
+        `${API}?_page=${page}&_limit=${limit}&${value}=${searchVal}`
     );
+    console.log(data)
     dispatch({
       type: "GET_PRODUCT",
       payload: data,
     });
+
+
   };
 
   const totalPageFunc = async () => {
     let { data } = await axios(API);
     totalPage = Math.ceil(data.length / limit);
   };
+
+  // const getTypeOperator = (type,operat) => {
+  //   console.log(searchVal)
+  //   if(type === "name"){
+  //     setValue(`&name=${searchVal}`)
+  //   }
+  // };
 
   const prevPage = () => {
     if (page <= 1) return;
@@ -71,6 +95,7 @@ const TableContextProvider = ({ children }) => {
     addProduct,
     getProduct,
     setSearchVal,
+    searchVal,
     productsArr: state.product,
   };
 
