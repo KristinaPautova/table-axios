@@ -30,7 +30,7 @@ let limit = 5;
 const TableContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
   const location = useLocation();
-  const [searchVal, setSearchVal] = useState("");
+  const [searchVal, setSearchVal] = useState("5444");
 
   const addProduct = async (product) => {
     await axios.post(API, product);
@@ -38,8 +38,9 @@ const TableContextProvider = ({ children }) => {
 
   const getProduct = async () => {
     totalPageFunc();
+
     const { data } = await axios.get(
-      `${API}?_page=${page}&_limit=${limit}&q=${searchVal}`
+      `${API}?_page=${page}&_limit=${limit}&quantity=${searchVal}`
     );
     dispatch({
       type: "GET_PRODUCT",
@@ -69,6 +70,7 @@ const TableContextProvider = ({ children }) => {
     prevPage,
     addProduct,
     getProduct,
+    setSearchVal,
     productsArr: state.product,
   };
 

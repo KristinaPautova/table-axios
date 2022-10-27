@@ -1,10 +1,17 @@
-import React, { useContext, useEffect } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "./Table.css";
 import { tableContext } from "../../context/TableContextProvider";
+import Search from "../Search/Search";
 
 const Table = () => {
   const { getProduct, productsArr, prevPage, nextPage } =
     useContext(tableContext);
+
+  const [type, setType] = useState("name");
+  const [operator, setOperator] = useState("contains");
+
+  console.log(type)
+  console.log(operator)
 
   useEffect(() => {
     getProduct();
@@ -14,6 +21,7 @@ const Table = () => {
     <>
       {productsArr.length ? (
         <div className="table">
+          <Search type={type} setType={setType} operator={operator} setOperator={setOperator}/>
           <div className="container">
             <table>
               <thead>

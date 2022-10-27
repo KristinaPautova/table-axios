@@ -1,33 +1,54 @@
-import React from "react";
 import "./Search.css";
+import React, { useContext, useEffect } from "react";
+import {tableContext} from "../../context/TableContextProvider";
 
-const Search = () => {
+const Search = ({type,setType, operator, setOperator}) => {
+    const { setSearchVal } =
+        useContext(tableContext);
   return (
     <div className="search">
       <div className="search__list">
         <label htmlFor="name">Столбцы</label>
-        <select className="form-control" id="example">
-          <option value="Название" selected>
+        <select className="form-control" id="example"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+        >
+          <option value="name" selected>
             Название
           </option>
-          <option value="Количество">Количество</option>
-          <option value="Расстояние">Расстояние</option>
+          <option value="quantity">Количество</option>
+          <option value="distance">Расстояние</option>
         </select>
       </div>
-      <div className="search__list">
-        <label htmlFor="name">Оператор</label>
-        <select className="form-control" id="example">
-          <option value="содержит" selected>
-            содержит
-          </option>
-          <option value="равно">равно</option>
-          <option value="больше">больше</option>
-          <option value="меньше">меньше</option>
-        </select>
-      </div>
+        {type === "name" ? (
+            <div className="search__list">
+                <label htmlFor="name">Оператор</label>
+                <select className="form-control" id="example"
+                        value={operator}
+                        onChange={(e) => setOperator(e.target.value)}
+                >
+                    <option value="contains" selected>
+                        содержит
+                    </option>
+                </select>
+            </div>
+        ): (
+            <div className="search__list">
+                <label htmlFor="name">Оператор</label>
+                <select className="form-control" id="example"
+                        value={operator}
+                        onChange={(e) => setOperator(e.target.value)}
+                >
+                    <option value="equals">равно</option>
+                    <option value="less">больше</option>
+                    <option value="more">меньше</option>
+                </select>
+            </div>
+        )}
+
       <div className="search__list">
         <label htmlFor="name">Ценность</label>
-        <input type="text" placeholder="Значение фильтра" />
+        <input onChange={(e) => setSearchVal(e.target.value)} type="text" placeholder="Значение фильтра" />
       </div>
     </div>
   );
